@@ -1,31 +1,31 @@
-package mygo_grpc_example
+package main
 
 import (
-    "context"
-    "log"
-    "net"
+	"context"
+	"log"
+	"net"
 
-    "google.golang.org/grpc"
+	"google.golang.org/grpc"
 
-    pb "github.com/stevenlee87/mygo-grpc-example/proto"
+	pb "github.com/stevenlee87/mygo-grpc-example/proto"
 )
 
 type SearchService struct{}
 
 func (s *SearchService) Search(ctx context.Context, r *pb.SearchRequest) (*pb.SearchResponse, error) {
-    return &pb.SearchResponse{Response: r.GetRequest() + " Server"}, nil
+	return &pb.SearchResponse{Response: r.GetRequest() + " Server"}, nil
 }
 
 const PORT = "9001"
 
 func main() {
-    server := grpc.NewServer()
-    pb.RegisterSearchServiceServer(server, &SearchService{})
+	server := grpc.NewServer()
+	pb.RegisterSearchServiceServer(server, &SearchService{})
 
-    lis, err := net.Listen("tcp", ":"+PORT)
-    if err != nil {
-        log.Fatalf("net.Listen err: %v", err)
-    }
+	lis, err := net.Listen("tcp", ":"+PORT)
+	if err != nil {
+		log.Fatalf("net.Listen err: %v", err)
+	}
 
-    server.Serve(lis)
+	server.Serve(lis)
 }
